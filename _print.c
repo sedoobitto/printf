@@ -1,43 +1,51 @@
 #include "main.h"
+#include <stdlib.h>
 /**
- * _printf - printf function
- * @format: const char pointer
- * Return: b_len
- */
+  * _printf - printf function
+  * @format: list of argument types passed to the function
+  *
+  * Return: number of characters printed
+  */
 int _printf(const char *format, ...)
 {
-	int (*pfunc)(va_list, flags_t *);
-	const char *p;
-	va_list arguments;
-	flags_t flags = {0, 0, 0};
+	va_list parameter;
+	int gen_counter;
+	int num_character;
 
-	register int count = 0;
-
-	va_start(arguments, format);
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
-	for (p = format; *p; p++)
+	num_character = 0;
+	va_start(parameter, format);
+	for (gen_counter = 0; format[gen_counter] != '\0'; gen_counter++)
 	{
-		if (*p == '%')
+		if (format[gen_counter] == '%')
 		{
-			p++;
-			if (*p == '%')
+			if (format[gen_counter + 1] == 'c')
 			{
-				count += _putchar('%');
-				continue;
+				num_character += character(parameter);
+				gen_counter++;
 			}
-			while (get_flag(*p, &flags))
-				p++;
-			pfunc = get_print(*p);
-			count += (pfunc)
-				? pfunc(arguments, &flags)
-				: _printf("%%%c", *p);
-		} else
-			count += _putchar(*p);
+			else if (format[gen_counter + 1] == 's')
+			{
+				num_character += string_character(parameter);
+				gen_counter++;
+			}
+			else if (format[gen_counter + 1 == 'd' || format[gen_counter] == 'i'])
+			{
+				num_character += print_digit(parameter);
+				gen_counter++;
+			}
+			else if (format[gen_counter + 1] == '%')
+			{
+				_putchar('%');
+				gen_counter++;
+				num_character++;
+			}
+		}
+		else
+		{
+			_putchar(format[gen_counter]);
+			num_character++;
+		}
 	}
-	_putchar(-1);
-	va_end(arguments);
-	return (count);
+	va_end(parameter);
+	return (num_character);
 }
