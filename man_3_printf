@@ -1,6 +1,6 @@
 .\" _printf man page /usr/share/man/man3/printf.3
 .\"
-.TH _PRINTF 3 "5-10-2021" "0.1" "ALX-Holberton _printf"
+.TH _PRINTF 3 "5-08-2022" "0.1" "ALX _printf"
 
 .SH NAME
 _printf
